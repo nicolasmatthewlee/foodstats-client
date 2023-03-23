@@ -8,7 +8,7 @@ function App() {
 
   return (
     <div>
-      <h1 className="text-[40px] text-left pt-[30px] px-[30px]">FoodStat</h1>
+      <h1 className="text-[40px] text-left pt-[30px] px-[30px]">FoodStats</h1>
       <SearchBar api={api} />
       <Routes>
         <Route path="/" element={null} />

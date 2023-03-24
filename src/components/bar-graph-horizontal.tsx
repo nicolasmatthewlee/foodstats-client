@@ -11,7 +11,8 @@ interface Props {
 
 export const BarGraphHorizontal = ({ title, data, units, labels }: Props) => {
   const svgRef = useRef<SVGSVGElement>(null);
-  const dimensions = useResizeObserver(svgRef);
+  const svgBoxRef = useRef<HTMLDivElement>(null);
+  const dimensions = useResizeObserver(svgBoxRef);
   const [yAxisPadding, setYAxisPadding] = useState<number>(0);
 
   useEffect(() => {
@@ -94,19 +95,27 @@ export const BarGraphHorizontal = ({ title, data, units, labels }: Props) => {
   }, [data, units, labels, dimensions]);
 
   return (
-    <div className="max-w-full space-y-[10px] flex flex-col">
+    <div
+      className="flex flex-col"
+      style={{ height: `${20 * data.length + 17}px` }}
+    >
       <p className="text-[12px]">{title}</p>
-      <svg
-        ref={svgRef}
-        className="w-full overflow-visible border-t border-white pb-[17px]"
+      <div
+        ref={svgBoxRef}
+        className="flex-1 flex space-y-[10px]"
         style={{
-          paddingLeft: yAxisPadding,
-          height: `${20 * data.length + 17}px`,
+          marginLeft: yAxisPadding,
+          marginBottom: "19px",
         }}
       >
-        <g className="x-axis" />
-        <g className="y-axis" />
-      </svg>
+        <svg
+          ref={svgRef}
+          className="w-full overflow-visible border-t border-white pb-[17px]"
+        >
+          <g className="x-axis" />
+          <g className="y-axis" />
+        </svg>
+      </div>
     </div>
   );
 };

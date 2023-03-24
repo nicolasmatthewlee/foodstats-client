@@ -168,14 +168,13 @@ export const Visualizations = ({
         </div>
         <p className="text-sm text-gray-500">{dataType}</p>
       </div>
-      <div className="h-[80px]">
-        <BarGraphStacked
-          title="Macronutrients"
-          data={macrosData}
-          units={macrosUnits}
-          labels={macrosLabels}
-        />
-      </div>
+      <BarGraphStacked
+        title="Macronutrients"
+        data={macrosData}
+        units={macrosUnits}
+        labels={macrosLabels}
+        height="80px"
+      />
 
       <BarGraphHorizontal
         title="Vitamins & Minerals"

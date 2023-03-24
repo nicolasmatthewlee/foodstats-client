@@ -1,18 +1,22 @@
 import { useEffect, useState } from "react";
-import ResizeObserver from "resize-observer-polyfill";
+import { ResizeObserver } from "resize-observer";
+import { ContentRect } from "resize-observer/lib/ContentRect";
 
-const useResizeObserver = (ref: React.RefObject<SVGSVGElement>) => {
-  const [dimensions, setDimensions] = useState<DOMRectReadOnly | null>(null);
+const useResizeObserver = (ref: React.RefObject<HTMLDivElement>) => {
+  const target = ref.current;
+  const [dimensions, setDimensions] = useState<ContentRect | null>(null);
+
   useEffect(() => {
-    const observeTarget = ref.current;
     const resizeObserver = new ResizeObserver((entries) => {
       setDimensions(entries[0].contentRect);
     });
-    if (observeTarget) resizeObserver.observe(observeTarget);
+
+    if (target) resizeObserver.observe(target);
+
     return () => {
-      if (observeTarget) resizeObserver.unobserve(observeTarget); // cleanup
+      if (target) resizeObserver.unobserve(target);
     };
-  }, [ref]);
+  }, [target]);
   return dimensions;
 };
 

@@ -7,11 +7,19 @@ interface Props {
   data: number[];
   units: string[];
   labels: string[];
+  height: string;
 }
 
-export const BarGraphStacked = ({ title, data, units, labels }: Props) => {
+export const BarGraphStacked = ({
+  title,
+  data,
+  units,
+  labels,
+  height,
+}: Props) => {
   const svgRef = useRef<SVGSVGElement>(null);
-  const dimensions = useResizeObserver(svgRef);
+  const svgBoxRef = useRef<HTMLDivElement>(null);
+  const dimensions = useResizeObserver(svgBoxRef);
   const [legendPadding, setLegendPadding] = useState<number>(0);
 
   useEffect(() => {
@@ -140,23 +148,22 @@ export const BarGraphStacked = ({ title, data, units, labels }: Props) => {
       .select(".border")
       .attr("width", dimensions.width)
       .attr("height", dimensions.height);
-  });
+  }, [dimensions, data, labels, units]);
 
   return (
-    <div className="max-w-full h-full flex flex-col space-y-[10px]">
+    <div
+      className="flex flex-col"
+      style={{ height: height, paddingBottom: legendPadding }}
+    >
       <p className="text-[12px]">{title}</p>
-
-      <svg
-        ref={svgRef}
-        className="w-full h-full overflow-visible"
-        style={{ paddingBottom: legendPadding }}
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <rect className="border fill-none stroke-gray-300" />
-        <g className="x-axis" />
-        <g className="y-axis" />
-        <g className="legend" />
-      </svg>
+      <div ref={svgBoxRef} className="flex-1 flex space-y-[10px] min-h-0">
+        <svg ref={svgRef} className="w-full h-full overflow-visible">
+          <rect className="border fill-none stroke-gray-300" />
+          <g className="x-axis" />
+          <g className="y-axis" />
+          <g className="legend" />
+        </svg>
+      </div>
     </div>
   );
 };

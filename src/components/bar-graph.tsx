@@ -11,7 +11,8 @@ interface Props {
 
 export const BarGraph = ({ title, data, units, labels }: Props) => {
   const svgRef = useRef<SVGSVGElement>(null);
-  const dimensions = useResizeObserver(svgRef);
+  const svgBoxRef = useRef<HTMLDivElement>(null);
+  const dimensions = useResizeObserver(svgBoxRef);
   const [yAxisPadding, setYAxisPadding] = useState<number>(0);
 
   useEffect(() => {
@@ -91,14 +92,16 @@ export const BarGraph = ({ title, data, units, labels }: Props) => {
   return (
     <div className="max-w-full h-full space-y-[10px] flex flex-col">
       <p className="text-[12px]">{title}</p>
-      <svg
-        ref={svgRef}
-        className="w-full h-full overflow-visible pb-[18px] border-t border-white"
-        style={{ paddingLeft: yAxisPadding }}
-      >
-        <g className="x-axis" />
-        <g className="y-axis" />
-      </svg>
+      <div ref={svgBoxRef} className="w-full h-full">
+        <svg
+          ref={svgRef}
+          className="w-full h-full overflow-visible pb-[18px] border-t border-white"
+          style={{ paddingLeft: yAxisPadding }}
+        >
+          <g className="x-axis" />
+          <g className="y-axis" />
+        </svg>
+      </div>
     </div>
   );
 };

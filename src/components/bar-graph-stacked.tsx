@@ -150,6 +150,7 @@ export const BarGraphStacked = ({ title, data, units, labels }: Props) => {
         ref={svgRef}
         className="w-full h-full overflow-visible"
         style={{ paddingBottom: legendPadding }}
+        xmlns="http://www.w3.org/2000/svg"
       >
         <rect className="border fill-none stroke-gray-300" />
         <g className="x-axis" />

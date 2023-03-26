@@ -6,6 +6,7 @@ import NUTRIENT_DATA_JSON from "../nutrient_amounts.json";
 import { percentile } from "./graph-utilities";
 import { useEffect, useState } from "react";
 import { NutrientInterface } from "../interfaces/nutrient-interface";
+import { ViolinPlot } from "./violin-plot";
 const NUTRIENT_DATA = Object(NUTRIENT_DATA_JSON);
 
 interface Props {
@@ -175,7 +176,10 @@ export const Visualizations = ({
         labels={macrosLabels}
         height="90px"
       />
-
+      <ViolinPlot
+        title="distribution of water (#1051)"
+        data={NUTRIENT_DATA[1051]}
+      />
       <BarGraphHorizontal
         title="Vitamins & Minerals"
         data={vitaminsMineralsData}

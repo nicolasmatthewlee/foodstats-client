@@ -44,7 +44,6 @@ export const BarGraphHorizontal = ({ title, data, units, labels }: Props) => {
       .data(data)
       .join("rect")
       .attr("class", "bar")
-
       .attr("height", (_: number, i: number) => yScale.bandwidth())
       .attr("y", (_: number, i: number) => yScale(i))
       .attr("data-index", (_: number, i: number) => i)

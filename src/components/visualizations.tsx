@@ -184,7 +184,7 @@ export const Visualizations = ({
   );
 
   return (
-    <div className="space-y-[30px] pb-[30px]">
+    <div className="space-y-[30px] pb-[45px]">
       <div className="flex flex-col">
         <div className="flex">
           <h1 className="truncate flex-1">{description}</h1>
@@ -208,7 +208,7 @@ export const Visualizations = ({
       />
 
       <button
-        className="hover:bg-gray-100 text-sm px-[7px] py-[2px] rounded-sm"
+        className="hover:bg-gray-100 text-sm py-[2px] rounded-sm"
         onClick={() => {
           setIsShowingAbsoluteData(!isShowingAbsoluteData);
         }}
@@ -216,7 +216,7 @@ export const Visualizations = ({
         {isShowingAbsoluteData ? "percentiles" : "absolute"}
       </button>
       <div>
-        <div className="text-sm px-[7px] flex">
+        <div className="text-sm flex">
           <p className="py-[2px]">amount:</p>
           <input
             type="text"
@@ -232,9 +232,104 @@ export const Visualizations = ({
             }}
           />
         </div>
-        <p className="px-[7px] text-xs italic text-gray-400">
-          {amountErrorMessage}
+        <p className="text-xs italic text-gray-400">{amountErrorMessage}</p>
+      </div>
+
+      <div className="flex flex-col space-y-[10px] max-w-lg">
+        <h3 className="text-sm">Information</h3>
+        <p className="text-xs text-gray-500">
+          {dataType === "SR Legacy"
+            ? `SR Legacy has been the primary food composition data type in the
+            United States for decades. It provides a comprehensive list of
+            values for food components, including nutrients derived from
+            analyses, imputations, and the published literature. This data type
+            has provided the values for most other public and private food
+            composition databases and has supported a wide range of public
+            policy initiatives, research studies, and diet planning and
+            education activities. SR Legacy, released in April 2018, is the
+            final release of this data type and will not be updated. For more
+            recent data, users should search other data types in FoodData
+            Central.`
+            : dataType === "Foundation"
+            ? `Foundation Foods includes values derived from analyses for food
+              components, including nutrients on a diverse range of foods and
+              ingredients as well as extensive underlying metadata. These
+              metadata include the number of samples, sampling location, date of
+              collection, analytical approaches used, and if appropriate,
+              agricultural information such as genotype and production
+              practices. The enhanced depth and transparency of Foundation Foods
+              data can provide valuable insights into the many factors that
+              influence variability in nutrient and food component profiles. The
+              goal of Foundation Foods will be to, over time, expand the number
+              of basic foods and ingredients and their underlying data.`
+            : dataType === "Experimental"
+            ? `Experimental Foods contains foods produced, acquired, or studied
+              under unique conditions, such as alternative management systems,
+              experimental genotypes, or research/analytical protocols. The
+              foods in this data type may not be commercially available to the
+              public or the data may expand information about the specific food.
+              Experimental Foods are for research purposes and may not be
+              appropriate as a reference for the consumer or for diet planning.
+              Experimental Foods data may also be available through links to
+              relevant agricultural research data sources, such as the AgCROS.
+              The data in Experimental Foods may include (or link to) variables
+              such as genetics, environmental inputs and outputs, supply chains,
+              economic considerations, and nutrition research. These data will
+              allow users to examine a range of factors used that may affect the
+              profiles of food components, including nutrients and resulting
+              dietary intakes as well as the sustainability of agricultural and
+              dietary food systems.`
+            : dataType === "Survey (FNDDS)"
+            ? `Food and Nutrient Database for Dietary Studies 2019-2020 (FNDDS
+              2019-2020) provides nutrient and food component values for the
+              foods and beverages reported in What We Eat in America, the
+              dietary intake component of the National Health and Nutrition
+              Examination Survey (NHANES). FNDDS data releases correspond to the
+              NHANES two-year data cycles. FNDDS data facilitate analyses of
+              dietary intakes reported in NHANES as well as many other dietary
+              research studies.`
+            : dataType === "Branded"
+            ? `The USDA Global Branded Food Products Database (Branded Foods),
+              formerly hosted on the USDA Food Composition Databases website,
+              are data from a public-private partnership whose goal is to
+              enhance the open sharing of nutrient data that appear on branded
+              and private label foods and are provided by the food industry.
+              Members of this partnership are: Agricultural Research Service
+              (ARS), Institute for the Advancement of Food and Nutrition
+              Sciences (IAFNS), GS1 US, 1WorldSync, Label Insight, University of
+              Maryland, Joint Institute for Food Safety and Applied Nutrition.
+              Information in Branded Foods is received from food industry data
+              providers. USDA supports this data type by standardizing the
+              presentation of the data. Branded Foods data are used in a variety
+              of ways, including research studies, food label regulatory
+              efforts, and product development. Beginning in April 2020, data in
+              Branded Foods will be updated on a monthly basis. Monthly updates
+              can be found in the API. In addition, downloads for Branded Foods
+              are generated every six months, and reflect the most-up- to-date
+              version of each product at the time the download is generated.`
+            : null}
+          <a rel="stylesheet" href="#source1">
+            <sup className="text-blue-500">[1]</sup>
+          </a>
         </p>
+      </div>
+      <div className="flex flex-col space-y-[10px]">
+        <h3 className="text-sm">References</h3>
+        {[
+          "SR Legacy",
+          "Survey (FNDDS)",
+          "Branded",
+          "Experimental",
+          "Foundation",
+        ].includes(dataType) ? (
+          <ol className="list-decimal pl-[20px]">
+            <li className="text-xs text-gray-500" id="source1">
+              U.S. Department of Agriculture. (n.d.). Fooddata Central about Us.
+              FoodData Central. Retrieved March 26, 2023, from
+              https://fdc.nal.usda.gov/about-us.html
+            </li>
+          </ol>
+        ) : null}
       </div>
     </div>
   );

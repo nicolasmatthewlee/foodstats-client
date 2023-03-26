@@ -1,6 +1,6 @@
 import { SearchBar } from "./components/searchbar";
 import { Footer } from "./components/footer";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Link } from "react-router-dom";
 import { FoodPage } from "./pages/food-page";
 
 function App() {
@@ -8,7 +8,12 @@ function App() {
 
   return (
     <div>
-      <h1 className="text-[40px] text-left pt-[30px] px-[30px]">FoodStats</h1>
+      <div className="text-left pt-[30px] px-[30px]">
+        <Link to="/">
+          <h1 className="inline text-[40px] ">FoodStats</h1>
+        </Link>
+      </div>
+
       <SearchBar api={api} />
       <Routes>
         <Route path="/" element={null} />

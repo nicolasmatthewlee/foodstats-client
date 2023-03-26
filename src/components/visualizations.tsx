@@ -208,7 +208,7 @@ export const Visualizations = ({
       />
 
       <button
-        className="hover:bg-gray-100 text-sm py-[2px] rounded-sm"
+        className="hover:bg-gray-100 text-xs py-[2px] rounded-sm"
         onClick={() => {
           setIsShowingAbsoluteData(!isShowingAbsoluteData);
         }}
@@ -216,7 +216,7 @@ export const Visualizations = ({
         {isShowingAbsoluteData ? "percentiles" : "absolute"}
       </button>
       <div>
-        <div className="text-sm flex">
+        <div className="text-xs flex">
           <p className="py-[2px]">amount:</p>
           <input
             type="text"
@@ -236,7 +236,7 @@ export const Visualizations = ({
       </div>
 
       <div className="flex flex-col space-y-[10px] max-w-lg">
-        <h3 className="text-sm">Information</h3>
+        <h3 className="text-xs">Information</h3>
         <p className="text-xs text-gray-500">
           {dataType === "SR Legacy"
             ? `SR Legacy has been the primary food composition data type in the
@@ -305,7 +305,7 @@ export const Visualizations = ({
               efforts, and product development. Beginning in April 2020, data in
               Branded Foods will be updated on a monthly basis. Monthly updates
               can be found in the API. In addition, downloads for Branded Foods
-              are generated every six months, and reflect the most-up- to-date
+              are generated every six months, and reflect the most-up-to-date
               version of each product at the time the download is generated.`
             : null}
           <a rel="stylesheet" href="#source1">
@@ -314,7 +314,7 @@ export const Visualizations = ({
         </p>
       </div>
       <div className="flex flex-col space-y-[10px]">
-        <h3 className="text-sm">References</h3>
+        <h3 className="text-xs">References</h3>
         {[
           "SR Legacy",
           "Survey (FNDDS)",

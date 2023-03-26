@@ -49,7 +49,7 @@ export const SearchBar = ({ api }: Props) => {
             type="text"
             className="flex-1 py-[3px] pl-[35px] pr-10px"
             onChange={(e) => setSearchValue(e.target.value)}
-            placeholder="search..."
+            placeholder="search foods..."
             onClick={() => setShowSearchResults(true)}
           />
           <button

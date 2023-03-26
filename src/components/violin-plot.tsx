@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useResizeObserver, truncateSVGText } from "./graph-utilities";
+import { useResizeObserver } from "./graph-utilities";
 import * as d3 from "d3";
 
 interface Props {

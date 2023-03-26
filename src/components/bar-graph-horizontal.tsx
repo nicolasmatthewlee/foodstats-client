@@ -95,10 +95,7 @@ export const BarGraphHorizontal = ({ title, data, units, labels }: Props) => {
   }, [data, units, labels, dimensions]);
 
   return (
-    <div
-      className="flex flex-col"
-      style={{ height: `${20 * data.length + 17}px` }}
-    >
+    <div className="flex flex-col">
       <p className="text-[12px]">{title}</p>
       <div
         ref={svgBoxRef}
@@ -111,6 +108,7 @@ export const BarGraphHorizontal = ({ title, data, units, labels }: Props) => {
         <svg
           ref={svgRef}
           className="w-full overflow-visible border-t border-white pb-[17px]"
+          style={{ height: `${20 * data.length + 17}px` }}
         >
           <g className="x-axis" />
           <g className="y-axis" />

@@ -152,7 +152,7 @@ export const BarGraphStacked = ({
 
   return (
     <div
-      className="flex flex-col"
+      className="flex flex-col space-y-[10px]"
       style={{ height: height, paddingBottom: legendPadding }}
     >
       <p className="text-[12px]">{title}</p>

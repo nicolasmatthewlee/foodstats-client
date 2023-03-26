@@ -173,7 +173,7 @@ export const Visualizations = ({
         data={macrosData}
         units={macrosUnits}
         labels={macrosLabels}
-        height="80px"
+        height="90px"
       />
 
       <BarGraphHorizontal

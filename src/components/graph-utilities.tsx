@@ -3,10 +3,10 @@ import { ResizeObserver } from "resize-observer";
 import { ContentRect } from "resize-observer/lib/ContentRect";
 
 const useResizeObserver = (ref: React.RefObject<HTMLDivElement>) => {
-  const target = ref.current;
   const [dimensions, setDimensions] = useState<ContentRect | null>(null);
 
   useEffect(() => {
+    const target = ref.current;
     const resizeObserver = new ResizeObserver((entries) => {
       setDimensions(entries[0].contentRect);
     });
@@ -16,7 +16,7 @@ const useResizeObserver = (ref: React.RefObject<HTMLDivElement>) => {
     return () => {
       if (target) resizeObserver.unobserve(target);
     };
-  }, [target]);
+  }, [ref]);
   return dimensions;
 };
 

@@ -1,15 +1,22 @@
 import { useEffect, useRef, useState } from "react";
-import { useResizeObserver } from "./graph-utilities";
+import { useResizeObserver, truncateSVGText } from "./graph-utilities";
 import * as d3 from "d3";
 
 interface Props {
   title: string;
   data: number[];
+  dataLabels?: string[];
   unit: string;
   separation?: number;
 }
 
-export const Beeswarm = ({ title, data, unit, separation = 1 }: Props) => {
+export const Beeswarm = ({
+  title,
+  data,
+  dataLabels,
+  unit,
+  separation = 1,
+}: Props) => {
   const svgRef = useRef<SVGSVGElement>(null);
   const svgBoxRef = useRef<HTMLDivElement>(null);
   const dimensions = useResizeObserver(svgBoxRef);
@@ -67,16 +74,25 @@ export const Beeswarm = ({ title, data, unit, separation = 1 }: Props) => {
     }
     setSvgHeight(Math.abs(maxY - 2 * radius));
 
+    const xAxis = d3.axisBottom(xScale);
+    svg
+      .select(".x-axis")
+      .style("transform", `translateY(${dimensions.height}px)`)
+      .call(xAxis);
+
     svg
       .selectAll(".dot")
       .data(points)
       .join("circle")
       .attr("class", "dot")
+      .attr("data-label", (p: { x: number; y: number }, i: number) =>
+        dataLabels ? dataLabels[i] : null
+      )
       .attr("cx", (p: { x: number; y: number }) => p.x)
       .attr(
         "cy",
-        (p: { x: number; y: number }) => dimensions.height - radius + p.y
-      ) // push one radius up so entire circle is contained in plot
+        (p: { x: number; y: number }) => dimensions.height - radius + p.y - 1
+      ) // push one radius up so entire circle is contained in plot; -1 ensures the stroke is contained
       .attr("r", radius)
       .attr("fill", "black")
       .attr("stroke", "white")
@@ -110,21 +126,33 @@ export const Beeswarm = ({ title, data, unit, separation = 1 }: Props) => {
             .append("text")
             .attr("y", -radius - textPadding - 1)
             .attr("x", textPadding)
-            .text(`${p.value}${unit}`)
+            .text(`${p.value} ${unit} | ${event.target.dataset.label}`)
             .style("font-size", `${textHeight}px`)
             .style("font-weight", "bold");
+
+          truncateSVGText(text.node(), dimensions.width);
 
           textFill.attr(
             "width",
             text.node().getComputedTextLength() + textPadding * 2
           ); // set rect width based on text
+
+          // adjust label position if necessary
+          if (p.x + +textFill.attr("width") > dimensions.width) {
+            textElement.style(
+              "transform",
+              `translate(${dimensions.width - +textFill.attr("width")}px,${
+                dimensions.height + p.y - radius
+              }px)`
+            );
+          }
         }
       )
       .on("mouseleave", (event: any) => {
         d3.select(event.target).attr("fill", "black");
         svg.selectAll(".data-label").remove();
       });
-  }, [data, dimensions]);
+  }, [data, dimensions, separation, unit]);
 
   return (
     <div className="flex flex-col space-y-[10px]">
@@ -165,7 +193,6 @@ export const Beeswarm = ({ title, data, unit, separation = 1 }: Props) => {
           style={{ height: svgHeight }}
         >
           <g className="x-axis" />
-          <g className="y-axis" />
         </svg>
       </div>
     </div>

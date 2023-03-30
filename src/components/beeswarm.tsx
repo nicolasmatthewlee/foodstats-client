@@ -128,7 +128,30 @@ export const Beeswarm = ({ title, data, unit, separation = 1 }: Props) => {
 
   return (
     <div className="flex flex-col space-y-[10px]">
-      <p className="text-[12px]">{title}</p>
+      <div className="flex items-center">
+        <p className="text-[12px]">{title}</p>
+        <div className="flex-1 flex relative justify-end">
+          <button
+            className="peer border px-[5px] rounded-sm text-xs text-gray-400
+          hover:bg-black hover:text-white hover:border-black
+          hover:rounded-b-none"
+          >
+            ?
+          </button>
+          <div
+            className="hidden max-w-md right-0 top-full text-xs absolute bg-white border-black rounded-sm rounded-tr-none border p-[15px]
+          peer-hover:block "
+          >
+            To improve rendering speed, the beeswarm algorithm implemented here
+            does not maximize density, but decides to push up based on the
+            occupying presence of a previously-placed element. This means that
+            if the same data was presented in a different order, a slightly
+            different plot may result.
+          </div>
+        </div>
+        <div></div>
+      </div>
+
       <div
         ref={svgBoxRef}
         className="flex-1 flex space-y-[10px]"

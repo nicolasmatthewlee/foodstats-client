@@ -2,8 +2,8 @@ import { SearchBar } from "./components/searchbar";
 import { Footer } from "./components/footer";
 import { Routes, Route, Link } from "react-router-dom";
 import { FoodPage } from "./pages/food-page";
-import { Beeswarm } from "./components/beeswarm";
-import DATA from "./nutrient_amounts.json";
+import { HomePage } from "./pages/home-page";
+import { NutrientPage } from "./pages/nutrient-page";
 
 function App() {
   const api = "https://foodstats.net";
@@ -17,18 +17,13 @@ function App() {
           </h1>
         </Link>
       </div>
-      <SearchBar api={api} />
-      {/* <div className="px-[30px]">
-        <Beeswarm
-          title="Distribution of Water"
-          data={DATA[1051].slice(0, 500)}
-          unit="mcg"
-          separation={0.8}
-        />
-      </div> */}
+      <div className="pt-[15px] pb-[25px]">
+        <SearchBar api={api} />
+      </div>
       <Routes>
-        <Route path="/" element={null} />
+        <Route path="/" element={<HomePage />} />
         <Route path="/foods/:id" element={<FoodPage api={api} />} />
+        <Route path="/nutrients/:id" element={<NutrientPage />} />
         <Route
           path="*"
           element={<div className="p-[30px] pt-0">page not found</div>}

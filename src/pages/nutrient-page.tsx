@@ -38,14 +38,20 @@ export const NutrientPage = () => {
       {validId ? (
         <Beeswarm
           title={NUTRIENT_LIST[validId]}
-          data={SR_NUTRIENT_DATA_LABELS[validId].data.slice(0, 2000)}
-          dataLabels={labels.slice(0, 2000)}
+          data={SR_NUTRIENT_DATA_LABELS[validId].data}
+          dataLabels={labels}
           unit={NUTRIENT_ID_TO_UNIT[validId]}
           separation={0.8}
         />
       ) : (
         <h1>nothing to show</h1>
       )}
+      <Link to="/">
+        <button className="hover:underline text-sm mt-[30px]">
+          <FontAwesomeIcon icon={faLongArrowAltLeft} className="mr-[10px]" />
+          nutrients
+        </button>
+      </Link>
     </div>
   );
 };

@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { useResizeObserver, truncateSVGText } from "./graph-utilities";
 import { AccurateBeeswarm } from "accurate-beeswarm-plot";
 import * as d3 from "d3";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faToggleOn, faToggleOff } from "@fortawesome/free-solid-svg-icons";
 
 interface Props {
   title: string;
@@ -23,7 +25,11 @@ export const Beeswarm = ({
   const dimensions = useResizeObserver(svgBoxRef);
   const [svgHeight, setSvgHeight] = useState<number>(0);
 
+  const [maxPoints, setMaxPoints] = useState<number | undefined>(1000);
+
   useEffect(() => {
+    const usedData = data.slice(0, maxPoints);
+
     if (!dimensions) return;
     const svg = d3.select(svgRef.current);
 
@@ -31,26 +37,11 @@ export const Beeswarm = ({
 
     const xScale = d3
       .scaleLinear()
-      .domain([0, Math.max(...data)])
+      .domain([0, Math.max(...usedData)])
       .range([radius, dimensions.width - radius]);
 
-    const intersects = (
-      x0: number,
-      y0: number,
-      x1: number,
-      y1: number,
-      r: number
-    ) => {
-      if (
-        Math.sqrt(Math.pow(x1 - x0, 2) + Math.pow(y1 - y0, 2)) <=
-        2 * r * separation
-      )
-        return true;
-      else return false;
-    };
-
     // data must be transformed before evaluating intersection
-    const transformedData = data.map((x) => ({
+    const transformedData = usedData.map((x) => ({
       transformed: xScale(x),
       original: x,
     }));
@@ -147,7 +138,7 @@ export const Beeswarm = ({
         d3.select(event.target).attr("fill", "black");
         svg.selectAll(".data-label").remove();
       });
-  }, [data, dataLabels, dimensions, separation, unit]);
+  }, [data, dataLabels, dimensions, separation, unit, maxPoints]);
 
   return (
     <div className="flex flex-col space-y-[10px]">
@@ -165,14 +156,11 @@ export const Beeswarm = ({
             className="hidden max-w-md right-0 top-full text-xs absolute bg-white border-black rounded-sm rounded-tr-none border p-[15px]
           peer-hover:block "
           >
-            To improve rendering speed, the beeswarm algorithm implemented here
-            does not maximize density, but decides to push up based on the
-            occupying presence of a previously-placed element. This means that
-            if the same data was presented in a different order, a slightly
-            different plot may result.
+            To improve rendering speed, the plot defaults to showing the first
+            thousand points from the dataset (if they exist). To show the entire
+            dataset, toggle the switch at the bottom.
           </div>
         </div>
-        <div></div>
       </div>
 
       <div
@@ -189,6 +177,33 @@ export const Beeswarm = ({
         >
           <g className="x-axis" />
         </svg>
+      </div>
+
+      <div>
+        <div className="flex items-center space-x-[10px]">
+          <button
+            id="show-points"
+            className=""
+            onClick={(event) =>
+              maxPoints ? setMaxPoints(undefined) : setMaxPoints(1000)
+            }
+          >
+            {maxPoints ? (
+              <div className="w-[18px] h-[10px] rounded-full relative border-[1px] border-black">
+                <div className="absolute top-[1px] left-[1.5px] w-[6px] h-[6px] rounded-full bg-black" />
+              </div>
+            ) : (
+              <div className="w-[18px] h-[10px] rounded-full relative border-[1px] bg-black border-black">
+                <div className="absolute top-[1px] right-[1.5px] w-[6px] h-[6px] rounded-full bg-white" />
+              </div>
+            )}
+          </button>
+          <label htmlFor="show-points" className="text-xs">
+            {maxPoints
+              ? `showing sample of ${Math.min(data.length, 1000)} points`
+              : `showing all ${data.length} points`}
+          </label>
+        </div>
       </div>
     </div>
   );

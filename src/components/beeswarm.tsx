@@ -4,6 +4,7 @@ import { AccurateBeeswarm } from "accurate-beeswarm-plot";
 import * as d3 from "d3";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faToggleOn, faToggleOff } from "@fortawesome/free-solid-svg-icons";
+import { Switch } from "./switch";
 
 interface Props {
   title: string;
@@ -180,30 +181,14 @@ export const Beeswarm = ({
       </div>
 
       <div>
-        <div className="flex items-center space-x-[10px]">
-          <button
-            id="show-points"
-            className=""
-            onClick={(event) =>
-              maxPoints ? setMaxPoints(undefined) : setMaxPoints(1000)
-            }
-          >
-            {maxPoints ? (
-              <div className="w-[18px] h-[10px] rounded-full relative border-[1px] border-black">
-                <div className="absolute top-[1px] left-[1.5px] w-[6px] h-[6px] rounded-full bg-black" />
-              </div>
-            ) : (
-              <div className="w-[18px] h-[10px] rounded-full relative border-[1px] bg-black border-black">
-                <div className="absolute top-[1px] right-[1.5px] w-[6px] h-[6px] rounded-full bg-white" />
-              </div>
-            )}
-          </button>
-          <label htmlFor="show-points" className="text-xs">
-            {maxPoints
-              ? `showing sample of ${Math.min(data.length, 1000)} points`
-              : `showing all ${data.length} points`}
-          </label>
-        </div>
+        <Switch
+          isOn={Boolean(maxPoints)}
+          onLabel={`showing all ${data.length} points`}
+          offLabel={`showing sample of ${Math.min(data.length, 1000)} points`}
+          onClick={(event: Event) =>
+            maxPoints ? setMaxPoints(undefined) : setMaxPoints(1000)
+          }
+        />
       </div>
     </div>
   );

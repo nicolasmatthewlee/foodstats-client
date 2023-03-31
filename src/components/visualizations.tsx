@@ -5,6 +5,7 @@ import NUTRIENT_DATA_JSON from "../nutrient_amounts.json";
 import { percentile } from "./graph-utilities";
 import { useEffect, useState } from "react";
 import { NutrientInterface } from "../interfaces/nutrient-interface";
+import { Switch } from "./switch";
 const NUTRIENT_DATA = Object(NUTRIENT_DATA_JSON);
 
 interface Props {
@@ -207,14 +208,14 @@ export const Visualizations = ({
         labels={vitaminsMineralsLabels}
       />
 
-      <button
-        className="hover:bg-gray-100 text-xs py-[2px] rounded-sm"
+      <Switch
+        isOn={!isShowingAbsoluteData}
+        onLabel="showing absolute"
+        offLabel="showing percentiles"
         onClick={() => {
           setIsShowingAbsoluteData(!isShowingAbsoluteData);
         }}
-      >
-        {isShowingAbsoluteData ? "percentiles" : "absolute"}
-      </button>
+      />
       <div>
         <div className="text-xs flex">
           <p className="py-[2px]">amount:</p>

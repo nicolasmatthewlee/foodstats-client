@@ -38,8 +38,8 @@ export const NutrientPage = () => {
       {validId ? (
         <Beeswarm
           title={NUTRIENT_LIST[validId]}
-          data={SR_NUTRIENT_DATA_LABELS[validId].data.slice(0, 100)}
-          dataLabels={labels.slice(0, 100)}
+          data={SR_NUTRIENT_DATA_LABELS[validId].data.slice(0, 2000)}
+          dataLabels={labels.slice(0, 2000)}
           unit={NUTRIENT_ID_TO_UNIT[validId]}
           separation={0.8}
         />

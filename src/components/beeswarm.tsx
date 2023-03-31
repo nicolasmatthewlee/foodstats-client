@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useResizeObserver, truncateSVGText } from "./graph-utilities";
+import { AccurateBeeswarm } from "accurate-beeswarm-plot";
 import * as d3 from "d3";
 
 interface Props {
@@ -26,7 +27,7 @@ export const Beeswarm = ({
     if (!dimensions) return;
     const svg = d3.select(svgRef.current);
 
-    const radius = 4;
+    const radius = 3;
 
     const xScale = d3
       .scaleLinear()
@@ -54,25 +55,16 @@ export const Beeswarm = ({
       original: x,
     }));
 
-    let maxY = 0; // actually the min (negative value)
+    const points = new AccurateBeeswarm(
+      transformedData,
+      radius,
+      (n: { transformed: number; original: number }) => n.transformed
+    )
+      .oneSided()
+      .calculateYPositions();
 
-    let points: { x: number; y: number; value: number }[] = [];
-    for (let xobj of transformedData) {
-      let x = xobj.transformed;
-      let y = 0;
-      let intersections = points.filter((p) =>
-        intersects(p.x, p.y, x, y, radius)
-      );
-      while (intersections.length > 0) {
-        y -= radius;
-        intersections = points.filter((p) =>
-          intersects(p.x, p.y, x, y, radius)
-        );
-      }
-      maxY = Math.min(maxY, y);
-      points.push({ x, y, value: xobj.original });
-    }
-    setSvgHeight(Math.abs(maxY - 2 * radius));
+    const maxY = Math.max(...points.map((p: { y: number }) => p.y));
+    setSvgHeight(Math.abs(maxY + radius * 2 + 1));
 
     const xAxis = d3.axisBottom(xScale);
     svg
@@ -91,14 +83,17 @@ export const Beeswarm = ({
       .attr("cx", (p: { x: number; y: number }) => p.x)
       .attr(
         "cy",
-        (p: { x: number; y: number }) => dimensions.height - radius + p.y - 1
+        (p: { x: number; y: number }) => dimensions.height - radius + -p.y - 1
       ) // push one radius up so entire circle is contained in plot; -1 ensures the stroke is contained
       .attr("r", radius)
       .attr("fill", "black")
       .attr("stroke", "white")
       .on(
         "mouseenter",
-        (event: any, p: { x: number; y: number; value: number }) => {
+        (
+          event: any,
+          p: { x: number; y: number; datum: { original: number } }
+        ) => {
           d3.select(event.target).attr("fill", "red");
 
           const textElement = svg
@@ -108,7 +103,7 @@ export const Beeswarm = ({
             .attr("class", "data-label")
             .style(
               "transform",
-              `translate(${p.x}px,${dimensions.height + p.y - radius}px)`
+              `translate(${p.x}px,${dimensions.height - p.y - radius}px)`
             );
 
           const textHeight = 10;
@@ -126,7 +121,7 @@ export const Beeswarm = ({
             .append("text")
             .attr("y", -radius - textPadding - 1)
             .attr("x", textPadding)
-            .text(`${p.value} ${unit} | ${event.target.dataset.label}`)
+            .text(`${p.datum.original} ${unit} | ${event.target.dataset.label}`)
             .style("font-size", `${textHeight}px`)
             .style("font-weight", "bold");
 
@@ -142,7 +137,7 @@ export const Beeswarm = ({
             textElement.style(
               "transform",
               `translate(${dimensions.width - +textFill.attr("width")}px,${
-                dimensions.height + p.y - radius
+                dimensions.height - p.y - radius
               }px)`
             );
           }
@@ -152,7 +147,7 @@ export const Beeswarm = ({
         d3.select(event.target).attr("fill", "black");
         svg.selectAll(".data-label").remove();
       });
-  }, [data, dimensions, separation, unit]);
+  }, [data, dataLabels, dimensions, separation, unit]);
 
   return (
     <div className="flex flex-col space-y-[10px]">

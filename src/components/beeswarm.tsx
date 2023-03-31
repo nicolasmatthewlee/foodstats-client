@@ -27,8 +27,10 @@ export const Beeswarm = ({
   const [maxSvgHeight, setMaxSvgHeight] = useState<number>(0);
 
   const [maxPoints, setMaxPoints] = useState<number | undefined>(1000);
+  const [isLoadingData, setIsLoadingData] = useState<Boolean>(false);
 
   useEffect(() => {
+    setIsLoadingData(true);
     const usedData = data.slice(0, maxPoints);
 
     if (!dimensions) return;
@@ -139,6 +141,10 @@ export const Beeswarm = ({
         d3.select(event.target).attr("fill", "black");
         svg.selectAll(".data-label").remove();
       });
+
+    return () => {
+      setIsLoadingData(false);
+    };
   }, [data, dataLabels, dimensions, separation, unit, maxPoints]);
 
   return (
@@ -154,7 +160,7 @@ export const Beeswarm = ({
             ?
           </button>
           <div
-            className="hidden max-w-md right-0 top-full text-xs absolute bg-white border-black rounded-sm rounded-tr-none border p-[15px]
+            className="z-10 hidden max-w-md right-0 top-full text-xs absolute bg-white border-black rounded-sm rounded-tr-none border p-[15px]
           peer-hover:block "
           >
             To improve rendering speed, the plot defaults to showing the first
@@ -165,22 +171,22 @@ export const Beeswarm = ({
       </div>
 
       <div
-        className="resize-y overflow-y-scroll flex flex-col h-[300px] min-h-[200px] relative"
+        className="flex resize-y overflow-y-hidden h-[300px] min-h-[150px] relative"
         style={{ maxHeight: maxSvgHeight + 17 + 10 }}
       >
         <div className="w-full absolute top-0 h-[10px] bg-gradient-to-t from-transparent to-white" />
         <div
           ref={svgBoxRef}
-          className="flex-1 flex space-y-[10px]"
+          className="flex-1 space-y-[10px] flex"
           style={{
             marginBottom: "19px",
-            marginLeft: "6px",
-            marginRight: "12px",
+            marginLeft: "10px",
+            marginRight: "20px",
           }}
         >
           <svg
             ref={svgRef}
-            className="w-full overflow-visible border-t border-white pb-[17px]"
+            className="flex-1 overflow-visible border-t border-white pb-[17px]"
           >
             <g className="x-axis" />
           </svg>
@@ -192,9 +198,9 @@ export const Beeswarm = ({
           isOn={Boolean(maxPoints)}
           onLabel={`showing all ${data.length} points`}
           offLabel={`showing sample of ${Math.min(data.length, 1000)} points`}
-          onClick={(event: Event) =>
-            maxPoints ? setMaxPoints(undefined) : setMaxPoints(1000)
-          }
+          onClick={(event: Event) => {
+            return maxPoints ? setMaxPoints(undefined) : setMaxPoints(1000);
+          }}
         />
       </div>
     </div>

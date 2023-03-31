@@ -8,7 +8,7 @@ interface Props {
 export const Switch = ({ onClick, isOn, onLabel, offLabel }: Props) => {
   return (
     <div className="flex items-center space-x-[10px]">
-      <button id="switch" className="" onClick={(event) => onClick(event)}>
+      <button id="switch" onClick={(event) => onClick(event)}>
         {isOn ? (
           <div className="w-[18px] h-[10px] rounded-full relative border-[1px] border-black">
             <div className="absolute top-[1px] left-[1.5px] w-[6px] h-[6px] rounded-full bg-black" />

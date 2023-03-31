@@ -24,7 +24,7 @@ export const Beeswarm = ({
   const svgRef = useRef<SVGSVGElement>(null);
   const svgBoxRef = useRef<HTMLDivElement>(null);
   const dimensions = useResizeObserver(svgBoxRef);
-  const [svgHeight, setSvgHeight] = useState<number>(0);
+  const [maxSvgHeight, setMaxSvgHeight] = useState<number>(0);
 
   const [maxPoints, setMaxPoints] = useState<number | undefined>(1000);
 
@@ -56,7 +56,7 @@ export const Beeswarm = ({
       .calculateYPositions();
 
     const maxY = Math.max(...points.map((p: { y: number }) => p.y));
-    setSvgHeight(Math.abs(maxY + radius * 2 + 1));
+    setMaxSvgHeight(Math.abs(maxY + radius * 2 + 1));
 
     const xAxis = d3.axisBottom(xScale);
     svg
@@ -165,19 +165,26 @@ export const Beeswarm = ({
       </div>
 
       <div
-        ref={svgBoxRef}
-        className="flex-1 flex space-y-[10px]"
-        style={{
-          marginBottom: "19px",
-        }}
+        className="resize-y overflow-y-scroll flex flex-col h-[300px] min-h-[200px] relative"
+        style={{ maxHeight: maxSvgHeight + 17 + 10 }}
       >
-        <svg
-          ref={svgRef}
-          className="w-full overflow-visible border-t border-white pb-[17px]"
-          style={{ height: svgHeight }}
+        <div className="w-full absolute top-0 h-[10px] bg-gradient-to-t from-transparent to-white" />
+        <div
+          ref={svgBoxRef}
+          className="flex-1 flex space-y-[10px]"
+          style={{
+            marginBottom: "19px",
+            marginLeft: "6px",
+            marginRight: "12px",
+          }}
         >
-          <g className="x-axis" />
-        </svg>
+          <svg
+            ref={svgRef}
+            className="w-full overflow-visible border-t border-white pb-[17px]"
+          >
+            <g className="x-axis" />
+          </svg>
+        </div>
       </div>
 
       <div>

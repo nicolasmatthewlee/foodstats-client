@@ -45,6 +45,22 @@ export const BarGraphHorizontal = ({ title, data, units, labels }: Props) => {
     setYAxisPadding(svg.select(".y-axis").node().getBBox().width);
 
     svg
+      .selectAll(".y-axis>.tick>text")
+      .style("cursor", "default")
+      .on("mouseenter", (event: MouseEvent, i: number) => {
+        svg
+          .selectAll(`.data-label[data-index="${i}"]`)
+          .style("visibility", "visible");
+        svg
+          .selectAll(`.data-label-fill[data-index="${i}"]`)
+          .style("visibility", "visible");
+      })
+      .on("mouseleave", () => {
+        svg.selectAll(".data-label").style("visibility", "hidden");
+        svg.selectAll(".data-label-fill").style("visibility", "hidden");
+      });
+
+    svg
       .selectAll(".bar")
       .data(data)
       .join("rect")
@@ -52,27 +68,29 @@ export const BarGraphHorizontal = ({ title, data, units, labels }: Props) => {
       .attr("height", (_: number, i: number) => yScale.bandwidth())
       .attr("y", (_: number, i: number) => yScale(i))
       .attr("data-index", (_: number, i: number) => i)
-      .on("mouseenter", (event: any, v: number) => {
+      .each((v: number, i: number, nodelist: any) => {
+        const target = nodelist[i];
+
         const textPadding = 3;
         const textFill = svg
-          .selectAll(".data-label-fill")
-          .data([v])
-          .join("rect")
+          .append("rect")
           .attr("class", "data-label-fill")
-          .attr("y", +d3.select(event.target).attr("y") - 12)
+          .attr("y", +d3.select(target).attr("y") - 12)
           .attr("height", 12)
           .attr("fill", "white")
-          .attr("stroke", "black");
+          .attr("stroke", "black")
+          .attr("data-index", i)
+          .style("visibility", "hidden");
         const text = svg
-          .selectAll(".data-label")
-          .data([v])
-          .join("text")
+          .append("text")
           .attr("class", "data-label")
           .attr("font-size", "10px")
-          .attr("y", +d3.select(event.target).attr("y") - 2)
+          .attr("y", +d3.select(target).attr("y") - 2)
           .attr("x", xScale(v) - textPadding)
           .attr("text-anchor", "end")
-          .text(`${d3.format(".3s")(v)} ${units[event.target.dataset.index]}`);
+          .text(`${d3.format(".3s")(v)} ${units[target.dataset.index]}`)
+          .attr("data-index", i)
+          .style("visibility", "hidden");
 
         textFill.attr(
           "width",
@@ -90,12 +108,28 @@ export const BarGraphHorizontal = ({ title, data, units, labels }: Props) => {
           );
         }
       })
-      .on("mouseleave", () => {
-        svg.selectAll(".data-label").remove();
-        svg.selectAll(".data-label-fill").remove();
+      .on("mouseenter", (event: any, v: number) => {
+        svg
+          .selectAll(`.data-label[data-index="${event.target.dataset.index}"]`)
+          .style("visibility", "visible");
+        svg
+          .selectAll(
+            `.data-label-fill[data-index="${event.target.dataset.index}"]`
+          )
+          .style("visibility", "visible");
+      })
+      .on("mouseleave", (event: MouseEvent, v: number) => {
+        svg.selectAll(".data-label").style("visibility", "hidden");
+        svg.selectAll(".data-label-fill").style("visibility", "hidden");
       })
       .transition()
       .attr("width", (v: number) => xScale(v));
+
+    return () => {
+      // cleanup appended items
+      svg.selectAll(".data-label").remove();
+      svg.selectAll(".data-label-fill").remove();
+    };
   }, [data, units, labels, dimensions]);
 
   return (

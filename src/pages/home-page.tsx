@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import SR_NUTRIENT_DATA from "../nutrient_amounts.json";
 import NUTRIENT_LIST from "../nutrient_name.json";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faLongArrowAltRight } from "@fortawesome/free-solid-svg-icons";
 
 export const HomePage = () => {
   const nutrients: { [key: string]: string } = NUTRIENT_LIST;
@@ -39,6 +41,12 @@ export const HomePage = () => {
           );
         })}
       </ul>
+      <Link to="/datasets/sr-legacy">
+        <button className="flex items-center mt-[20px] hover:underline">
+          <h2 className="font-bold">explore SR Legacy</h2>
+          <FontAwesomeIcon className="ml-[10px]" icon={faLongArrowAltRight} />
+        </button>
+      </Link>
     </div>
   );
 };

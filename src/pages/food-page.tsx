@@ -32,7 +32,7 @@ export const FoodPage = ({ api }: Props) => {
       }
     };
     getFood();
-  }, [id]);
+  }, [id, api]);
 
   return (
     <div className="px-[30px]">

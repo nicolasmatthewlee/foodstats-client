@@ -4,6 +4,7 @@ import { Routes, Route, Link } from "react-router-dom";
 import { FoodPage } from "./pages/food-page";
 import { HomePage } from "./pages/home-page";
 import { NutrientPage } from "./pages/nutrient-page";
+import { SRPage } from "./pages/sr-page";
 
 function App() {
   const api = "https://foodstats.net";
@@ -24,6 +25,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/foods/:id" element={<FoodPage api={api} />} />
         <Route path="/nutrients/:id" element={<NutrientPage />} />
+        <Route path="/datasets/sr-legacy" element={<SRPage />} />
         <Route
           path="*"
           element={<div className="p-[30px] pt-0">page not found</div>}

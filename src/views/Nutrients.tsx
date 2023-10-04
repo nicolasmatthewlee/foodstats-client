@@ -1,10 +1,9 @@
 import { Link } from "react-router-dom";
+
 import SR_NUTRIENT_DATA from "nutrient_amounts.json";
 import NUTRIENT_LIST from "nutrient_name.json";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLongArrowAltRight } from "@fortawesome/free-solid-svg-icons";
 
-export const HomePage = () => {
+const Nutrients = () => {
   const nutrients: { [key: string]: string } = NUTRIENT_LIST;
 
   // sort only based on alpha characters
@@ -21,7 +20,7 @@ export const HomePage = () => {
   alphabetizedNames = alphabetizedNames.filter((x, i, a) => a.indexOf(x) === i);
 
   return (
-    <div className="px-[30px] pb-[30px]">
+    <div>
       <h2 className="font-bold">by nutrient</h2>
       <ul className="list-disc px-[20px] text-sm">
         {alphabetizedNames.map((name: string) => {
@@ -41,12 +40,8 @@ export const HomePage = () => {
           );
         })}
       </ul>
-      <Link to="/datasets/sr-legacy">
-        <button className="flex items-center mt-[20px] hover:underline">
-          <h2 className="font-bold">explore SR Legacy</h2>
-          <FontAwesomeIcon className="ml-[10px]" icon={faLongArrowAltRight} />
-        </button>
-      </Link>
     </div>
   );
 };
+
+export default Nutrients;

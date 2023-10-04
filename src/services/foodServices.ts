@@ -12,6 +12,6 @@ export interface Food {
 // returns a promise that returns Food on resolution
 export const getFoods = (query: string): Promise<Food[]> => {
   return axios
-    .get(`https://foodstats.net/api/foods/?query=${query}`)
+    .get(`/api/foods/?query=${query}`)
     .then((response) => response.data.results);
 };

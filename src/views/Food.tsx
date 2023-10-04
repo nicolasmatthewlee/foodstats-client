@@ -3,7 +3,7 @@ import { FoodInterface } from "interfaces/food-interface";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-export const FoodPage = () => {
+const Food = () => {
   const api: string = ""; // replace this later
   const { id } = useParams();
   const [data, setData] = useState<FoodInterface | null>(null);
@@ -44,3 +44,5 @@ export const FoodPage = () => {
     </div>
   );
 };
+
+export default Food;

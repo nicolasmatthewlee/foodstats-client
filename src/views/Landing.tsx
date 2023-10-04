@@ -7,7 +7,7 @@ import LANDSCAPE_3 from "assets/images/landscape3.png";
 import { SearchBar } from "components/searchbar";
 import { Footer } from "components/footer";
 
-export const Landing = () => {
+const Landing = () => {
   return (
     <div>
       {/* header and search bar */}
@@ -40,14 +40,14 @@ export const Landing = () => {
             { header: "nutrients", image: LANDSCAPE_2, link: "/nutrients/" },
             { header: "about", image: LANDSCAPE_3, link: "/about/" },
           ].map((e) => (
-            <div className="inline-block w-full">
+            <div className="inline-block w-full shadow-lg rounded-lg">
               <Link to={e.link}>
                 <div
                   className="relative bg-gray-100 rounded-lg bg-cover bg-center pb-[50%]
                   sm:pb-[100%] lg:pb-[75%]"
                   style={{ backgroundImage: `url(${e.image})` }}
                 >
-                  <h2 className="absolute font-bold text-white text-[30px] ml-[30px] mt-[15px]">
+                  <h2 className="absolute font-bold text-white text-[24px] ml-[30px] mt-[20px]">
                     {e.header}
                   </h2>
                 </div>
@@ -71,3 +71,5 @@ export const Landing = () => {
     </div>
   );
 };
+
+export default Landing;

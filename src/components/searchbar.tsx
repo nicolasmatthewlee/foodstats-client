@@ -26,7 +26,7 @@ export const SearchBar = () => {
   };
 
   return (
-    <div className="z-20 flex-1">
+    <div className="flex-1 min-w-0 relative z-10">
       {/* search input */}
       <form
         className={
@@ -77,13 +77,16 @@ export const SearchBar = () => {
 
       {/* search results */}
       {searchResults && searchResults.length > 0 ? (
-        <div className="flex flex-col shadow-lg">
+        <div className="flex flex-col shadow-lg absolute max-w-full">
           {searchResults.map((e, i) => (
             <Link to={`/foods/${e.id}`} key={e.id} className="flex">
               <button
                 className={
-                  "flex-1 text-left truncate px-[10px] py-[2px] focus:z-10 focus:bg-amber-300 focus:outline-none hover:bg-amber-300 " +
-                  (i % 2 === 0 ? " bg-gray-100 " : "bg-white")
+                  "flex-1 text-left truncate px-[15px] py-[5px] focus:z-10 focus:bg-amber-300 focus:outline-none hover:bg-amber-300 " +
+                  " " +
+                  (i % 2 === 0 ? "bg-gray-100 " : "bg-white") +
+                  " " +
+                  (i === searchResults.length - 1 ? "rounded-b-lg" : "")
                 }
                 onClick={() => {
                   setSearchResults(null);

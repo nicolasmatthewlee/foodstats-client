@@ -25,7 +25,7 @@ export const Landing = () => {
         className="pt-[15px] pb-[25px] px-[30px]
         sm:px-[60px] md:px-[90px] xl:px-[240px] flex justify-center"
       >
-        <div className="flex flex-1  max-w-[600px]">
+        <div className="flex flex-1  max-w-[600px] min-w-0">
           <SearchBar />
         </div>
       </div>

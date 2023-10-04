@@ -1,14 +1,12 @@
-import { SearchBar } from "./components/searchbar";
-import { Footer } from "./components/footer";
+import { SearchBar } from "components/searchbar";
+import { Footer } from "components/footer";
 import { Routes, Route, Link } from "react-router-dom";
-import { FoodPage } from "./pages/food-page";
-import { HomePage } from "./pages/home-page";
-import { NutrientPage } from "./pages/nutrient-page";
-import { SRPage } from "./pages/sr-page";
+import { FoodPage } from "views/food-page";
+import { HomePage } from "views/home-page";
+import { NutrientPage } from "views/nutrient-page";
+import { SRPage } from "views/sr-page";
 
 function App() {
-  const api = "https://foodstats.net";
-
   return (
     <div>
       <div className="text-left pt-[30px] px-[30px]">
@@ -19,11 +17,11 @@ function App() {
         </Link>
       </div>
       <div className="pt-[15px] pb-[25px]">
-        <SearchBar api={api} />
+        <SearchBar />
       </div>
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/foods/:id" element={<FoodPage api={api} />} />
+        <Route path="/foods/:id" element={<FoodPage />} />
         <Route path="/nutrients/:id" element={<NutrientPage />} />
         <Route path="/datasets/sr-legacy" element={<SRPage />} />
         <Route

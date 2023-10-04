@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import SR_NUTRIENT_DATA from "../nutrient_amounts.json";
-import NUTRIENT_LIST from "../nutrient_name.json";
+import SR_NUTRIENT_DATA from "nutrient_amounts.json";
+import NUTRIENT_LIST from "nutrient_name.json";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLongArrowAltRight } from "@fortawesome/free-solid-svg-icons";
 

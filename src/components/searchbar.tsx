@@ -9,11 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { getFoods, Food } from "../services/foodServices";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
-interface Props {
-  api: string;
-}
-
-export const SearchBar = ({ api }: Props) => {
+export const SearchBar = () => {
   const navigate = useNavigate();
 
   const [searchResults, setSearchResults] = useState<Food[] | null>(null);

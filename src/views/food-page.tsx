@@ -1,13 +1,10 @@
-import { Visualizations } from "../components/visualizations";
-import { FoodInterface } from "../interfaces/food-interface";
+import { Visualizations } from "components/visualizations";
+import { FoodInterface } from "interfaces/food-interface";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-interface Props {
-  api: string;
-}
-
-export const FoodPage = ({ api }: Props) => {
+export const FoodPage = () => {
+  const api: string = ""; // replace this later
   const { id } = useParams();
   const [data, setData] = useState<FoodInterface | null>(null);
   const [pageState, setPageState] = useState<

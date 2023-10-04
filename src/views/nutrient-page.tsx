@@ -1,13 +1,13 @@
 import { Link, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLongArrowAltLeft } from "@fortawesome/free-solid-svg-icons";
-import { Beeswarm } from "../components/beeswarm";
+import { Beeswarm } from "components/beeswarm";
 
-import SR_NUTRIENT_DATA from "../nutrient_amounts.json";
-import NUTRIENT_LIST from "../nutrient_name.json";
-import SR_NUTRIENT_DATA_LABELS from "../nutrient_amounts_labels.json";
-import SR_ID_TO_DESCRIPTION from "../sr_fdc_id_to_description.json";
-import NUTRIENT_ID_TO_UNIT from "../nutrient_id_to_unit.json";
+import SR_NUTRIENT_DATA from "nutrient_amounts.json";
+import NUTRIENT_LIST from "nutrient_name.json";
+import SR_NUTRIENT_DATA_LABELS from "nutrient_amounts_labels.json";
+import SR_ID_TO_DESCRIPTION from "sr_fdc_id_to_description.json";
+import NUTRIENT_ID_TO_UNIT from "nutrient_id_to_unit.json";
 
 // currently, data only available for SR_LEGACY nutrients
 type ValidNutrient = keyof typeof SR_NUTRIENT_DATA;

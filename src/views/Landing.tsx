@@ -30,6 +30,7 @@ const Landing = () => {
         </div>
       </div>
 
+      {/* menu options */}
       <div
         className="px-[30px] pb-[30px]
       md:pt-[50px]"

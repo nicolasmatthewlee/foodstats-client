@@ -1,23 +1,28 @@
-import { FoodInterface } from "../interfaces/food-interface";
 import { BarGraphStacked } from "./bar-graph-stacked";
 import { BarGraphHorizontal } from "./bar-graph-horizontal";
 import NUTRIENT_DATA_JSON from "../nutrient_amounts.json";
 import { percentile } from "./graph-utilities";
 import { useEffect, useState } from "react";
-import { NutrientInterface } from "../interfaces/nutrient-interface";
 import { Switch } from "./switch";
+import { Nutrient } from "services/foodServices";
 const NUTRIENT_DATA = Object(NUTRIENT_DATA_JSON);
 
 interface Props {
-  data: FoodInterface;
+  data: {
+    data_type: string;
+    id: number;
+    description: string;
+    publication_date: string;
+    foodNutrients: Nutrient[];
+  };
 }
 
 export const Visualizations = ({
-  data: { dataType, fdcId, description, foodNutrients, publishedDate },
+  data: { data_type, id, description, foodNutrients = [], publication_date },
 }: Props) => {
-  const findNutrientByName = (name: string, data: NutrientInterface[]) => {
+  const findNutrientByName = (name: string, data: Nutrient[]) => {
     for (let i = 0; i < data.length; i++) {
-      if (data[i].nutrient.name === name) return data[i];
+      if (data[i].nutrient === name) return data[i];
     }
     return false;
   };
@@ -35,14 +40,14 @@ export const Visualizations = ({
       const nutrient = findNutrientByName(n, dataSource);
       if (nutrient) {
         const label =
-          nutrient.nutrient.name === "Carbohydrate, by difference"
+          nutrient.nutrient === "Carbohydrate, by difference"
             ? "Carbohydrate"
-            : nutrient.nutrient.name === "Total lipid (fat)"
+            : nutrient.nutrient === "Total lipid (fat)"
             ? "Fat"
-            : nutrient.nutrient.name;
+            : nutrient.nutrient;
         labels.push(label);
         data.push(nutrient.amount);
-        if (absoluteUnits) units.push(nutrient.nutrient.unitName);
+        if (absoluteUnits) units.push(nutrient.unit);
         else units.push("%");
       }
     }
@@ -51,7 +56,7 @@ export const Visualizations = ({
   };
 
   const [foodNutrientPercentiles, setFoodNutrientPercentiles] = useState<
-    NutrientInterface[]
+    Nutrient[]
   >([]);
 
   const [isShowingAbsoluteData, setIsShowingAbsoluteData] =
@@ -62,14 +67,12 @@ export const Visualizations = ({
       nutrients: typeof foodNutrients,
       NUTRIENT_DATA: any
     ) => {
-      return nutrients.map((e) => {
+      return nutrients.map((e: Nutrient) => {
         const copy = structuredClone(e);
         copy["amount"] =
           Math.round(
             percentile(
-              e.nutrient.id in NUTRIENT_DATA
-                ? NUTRIENT_DATA[e.nutrient.id]
-                : [],
+              e.id in NUTRIENT_DATA ? NUTRIENT_DATA[e.id] : [],
               e.amount
             ) * 100
           ) / 100;
@@ -189,9 +192,9 @@ export const Visualizations = ({
       <div className="flex flex-col">
         <div className="flex">
           <h1 className="truncate flex-1">{description}</h1>
-          <p>#{fdcId}</p>
+          <p>#{id}</p>
         </div>
-        <p className="text-sm text-gray-500">{dataType}</p>
+        <p className="text-sm text-gray-500">{data_type}</p>
       </div>
 
       <BarGraphStacked
@@ -218,7 +221,7 @@ export const Visualizations = ({
       />
       <div>
         <div className="text-xs flex">
-          <p className="py-[2px]">amount:</p>
+          <p className="py-[2px]">Amount:</p>
           <input
             type="text"
             className="w-[80px] px-[5px] py-[2px]"
@@ -239,7 +242,7 @@ export const Visualizations = ({
       <div className="flex flex-col space-y-[10px] max-w-lg">
         <h3 className="text-xs">Information</h3>
         <p className="text-xs text-gray-500">
-          {dataType === "SR Legacy"
+          {data_type === "SR Legacy"
             ? `SR Legacy has been the primary food composition data type in the
             United States for decades. It provides a comprehensive list of
             values for food components, including nutrients derived from
@@ -251,7 +254,7 @@ export const Visualizations = ({
             final release of this data type and will not be updated. For more
             recent data, users should search other data types in FoodData
             Central.`
-            : dataType === "Foundation"
+            : data_type === "foundation_food"
             ? `Foundation Foods includes values derived from analyses for food
               components, including nutrients on a diverse range of foods and
               ingredients as well as extensive underlying metadata. These
@@ -263,7 +266,7 @@ export const Visualizations = ({
               influence variability in nutrient and food component profiles. The
               goal of Foundation Foods will be to, over time, expand the number
               of basic foods and ingredients and their underlying data.`
-            : dataType === "Experimental"
+            : data_type === "Experimental"
             ? `Experimental Foods contains foods produced, acquired, or studied
               under unique conditions, such as alternative management systems,
               experimental genotypes, or research/analytical protocols. The
@@ -280,7 +283,7 @@ export const Visualizations = ({
               profiles of food components, including nutrients and resulting
               dietary intakes as well as the sustainability of agricultural and
               dietary food systems.`
-            : dataType === "Survey (FNDDS)"
+            : data_type === "Survey (FNDDS)"
             ? `Food and Nutrient Database for Dietary Studies 2019-2020 (FNDDS
               2019-2020) provides nutrient and food component values for the
               foods and beverages reported in What We Eat in America, the
@@ -289,7 +292,7 @@ export const Visualizations = ({
               NHANES two-year data cycles. FNDDS data facilitate analyses of
               dietary intakes reported in NHANES as well as many other dietary
               research studies.`
-            : dataType === "Branded"
+            : data_type === "Branded"
             ? `The USDA Global Branded Food Products Database (Branded Foods),
               formerly hosted on the USDA Food Composition Databases website,
               are data from a public-private partnership whose goal is to
@@ -321,8 +324,8 @@ export const Visualizations = ({
           "Survey (FNDDS)",
           "Branded",
           "Experimental",
-          "Foundation",
-        ].includes(dataType) ? (
+          "foundation_food",
+        ].includes(data_type) ? (
           <ol className="list-decimal pl-[20px]">
             <li className="text-xs text-gray-500" id="source1">
               U.S. Department of Agriculture. (n.d.). Fooddata Central about Us.

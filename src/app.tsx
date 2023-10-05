@@ -1,7 +1,7 @@
 import { SearchBar } from "components/searchbar";
 import { Footer } from "components/footer";
 import { Routes, Route } from "react-router-dom";
-import Food from "views/Food";
+import FoodDetail from "views/FoodDetail";
 import Landing from "views/Landing";
 import Nutrients from "views/Nutrients";
 import { NutrientPage } from "views/nutrient-page";
@@ -11,7 +11,7 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<Landing />} />
-      <Route path="/foods/:id" element={<Food />} />
+      <Route path="/foods/:id" element={<FoodDetail />} />
       <Route path="/nutrients/" element={<Nutrients />} />
       <Route path="/nutrients/:id" element={<NutrientPage />} />
       <Route path="/datasets/sr-legacy" element={<SRPage />} />

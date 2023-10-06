@@ -3,7 +3,7 @@
   "name": "FoodStats",
   "icons": [
     {
-      "src": "icon.svg",
+      "src": "foodstats_icon.svg",
       "sizes": "48x48",
       "type": "image/svg"
     }

@@ -16,13 +16,15 @@ export const SearchBar = () => {
   const [isLoading, setIsLoading] = useState<Boolean>(false);
 
   const searchDatabase = async (query: string) => {
-    setIsLoading(true);
     setSearchResults(null);
-    getFoods(query)
-      .then((data) => {
-        setSearchResults(data);
-      })
-      .finally(() => setIsLoading(false));
+    if (query !== "") {
+      setIsLoading(true);
+      getFoods(query)
+        .then((data) => {
+          setSearchResults(data);
+        })
+        .finally(() => setIsLoading(false));
+    }
   };
 
   return (
@@ -77,7 +79,7 @@ export const SearchBar = () => {
 
       {/* search results */}
       {searchResults && searchResults.length > 0 ? (
-        <div className="flex flex-col shadow-lg absolute max-w-full">
+        <div className="flex flex-col shadow-lg absolute max-w-full rounded-b-lg">
           {searchResults.map((e, i) => (
             <Link to={`/foods/${e.id}`} key={e.id} className="flex">
               <button

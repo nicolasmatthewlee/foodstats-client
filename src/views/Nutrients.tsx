@@ -36,7 +36,7 @@ const Nutrients = () => {
       content={
         <div>
           <h2 className="font-bold text-[24px]">nutrients</h2>
-          <div className="items-end flex flex-wrap mb-[15px] h-[30px]">
+          <div className="mb-[15px] mt-[5px] grid grid-cols-[repeat(auto-fill,minmax(20px,1fr))]">
             {Object.keys(nutrients)
               .sort()
               .map((firstLetter: string, i) => (
@@ -69,7 +69,7 @@ const Nutrients = () => {
                     key={i}
                     id={`${firstLetter}`}
                     className={
-                      "px-[10px] pb-[4px]" +
+                      "px-[10px] pb-[4px] rounded-lg" +
                       " " +
                       (location.hash === `#${firstLetter}`
                         ? "bg-amber-300"

@@ -40,8 +40,8 @@ const Landing = () => {
             { header: "compare", image: LANDSCAPE_1, link: "/compare/" },
             { header: "nutrients", image: LANDSCAPE_2, link: "/nutrients/" },
             { header: "about", image: LANDSCAPE_3, link: "/about/" },
-          ].map((e) => (
-            <div className="inline-block w-full shadow-lg rounded-lg">
+          ].map((e, i) => (
+            <div className="inline-block w-full shadow-lg rounded-lg" key={i}>
               <Link to={e.link}>
                 <div
                   className="relative bg-gray-100 rounded-lg bg-cover bg-center pb-[50%]

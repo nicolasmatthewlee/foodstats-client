@@ -51,7 +51,8 @@
     src: url('./assets/fonts/Ubuntu/Ubuntu-BoldItalic.ttf')
 }
 
-* {
-    font-family: 'Ubuntu',monospace;
-    scroll-behavior: smooth
+html {
+    background-color: #F9FAFB;
+    scroll-behavior: smooth;
+    font-family: 'Ubuntu', monospace;
 }

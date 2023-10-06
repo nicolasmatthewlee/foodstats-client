@@ -8,19 +8,31 @@ export interface Food {
   publication_date: string;
 }
 
-export interface Nutrient {
+export interface FoodNutrient {
   id: number;
   nutrient: string;
   amount: number;
   unit: string;
 }
 
-// fetches foods containing a the query string
+export interface Nutrient {
+  id: number;
+  name: string;
+  unit_name: string;
+}
+
+// fetches foods containing the query string
 // returns a promise that returns Food[] on resolution
 export const getFoods = (query: string): Promise<Food[]> => {
   return axios
     .get(`/api/foods/?query=${query}`)
     .then((response) => response.data.results);
+};
+
+// fetches all nutrients
+// returns a promise that returns Nutrient[] on resolution
+export const getNutrients = (): Promise<Nutrient[]> => {
+  return axios.get(`/api/nutrients/`).then((response) => response.data);
 };
 
 // fetches food
@@ -31,7 +43,7 @@ export const getFood = (id: string): Promise<Food> => {
 
 // fetches nutrients for a food
 // returns a promise that returns Nutrient[] on resolution
-export const getFoodNutrients = (id: string): Promise<Nutrient[]> => {
+export const getFoodNutrients = (id: string): Promise<FoodNutrient[]> => {
   return axios
     .get(`/api/foods/${id}/nutrients/`)
     .then((response) => response.data);

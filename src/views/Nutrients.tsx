@@ -1,46 +1,102 @@
-import { Link } from "react-router-dom";
-
-import SR_NUTRIENT_DATA from "nutrient_amounts.json";
-import NUTRIENT_LIST from "nutrient_name.json";
+import { Link, useLocation } from "react-router-dom";
+import { HashLink } from "react-router-hash-link";
+import { useEffect, useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { getNutrients, Nutrient } from "services/foodServices";
+import AppLayout from "./AppLayout";
 
 const Nutrients = () => {
-  const nutrients: { [key: string]: string } = NUTRIENT_LIST;
+  const location = useLocation();
+  const [nutrients, setNutrients] = useState<{ [key: string]: Nutrient[] }>({});
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  // sort only based on alpha characters
-  const compareAlpha = (a: string, b: string) => {
-    const alphaA = a.toLowerCase().replaceAll(/[^a-z]/g, "");
-    const alphaB = b.toLowerCase().replaceAll(/[^a-z]/g, "");
-    return alphaA.localeCompare(alphaB);
-  };
-  let alphabetizedNames = Object.values(nutrients).sort(
-    compareAlpha
-  ) as string[];
+  // 1. retrieve and sort nutrients
+  useEffect(() => {
+    setIsLoading(true);
+    getNutrients()
+      .then((data) => {
+        const alphabetized: { [key: string]: Nutrient[] } = {};
+        data.forEach((n) => {
+          const alphaMatch = n.name.toLowerCase().match(/[a-zA-Z]/);
+          if (alphaMatch) {
+            if (alphabetized[alphaMatch[0]])
+              alphabetized[alphaMatch[0]].push(n);
+            else alphabetized[alphaMatch[0]] = [n];
+          }
+        });
 
-  // get unique names
-  alphabetizedNames = alphabetizedNames.filter((x, i, a) => a.indexOf(x) === i);
+        setNutrients(alphabetized);
+      })
+      .finally(() => setIsLoading(false));
+  }, []);
 
   return (
-    <div>
-      <h2 className="font-bold">by nutrient</h2>
-      <ul className="list-disc px-[20px] text-sm">
-        {alphabetizedNames.map((name: string) => {
-          const n = Object.keys(nutrients).filter((n) => {
-            return nutrients[n] === name;
-          })[0];
+    <AppLayout
+      content={
+        <div>
+          <h2 className="font-bold text-[24px]">nutrients</h2>
+          <div className="items-end flex flex-wrap mb-[15px] h-[30px]">
+            {Object.keys(nutrients)
+              .sort()
+              .map((firstLetter: string, i) => (
+                <HashLink
+                  to={`#${firstLetter}`}
+                  className="capitalize w-[20px] text-center hover:font-bold"
+                  key={i}
+                >
+                  {firstLetter}
+                </HashLink>
+              ))}
+          </div>
 
-          // currently, data only available for SR_LEGACY nutrients
-          if (!(n in SR_NUTRIENT_DATA)) return null;
+          {isLoading && (
+            <div>
+              <FontAwesomeIcon
+                icon={faSpinner}
+                className="animate-spin mr-[10px]"
+              />
+              fetching nutrients...
+            </div>
+          )}
 
-          return (
-            <li key={n}>
-              <Link to={`/nutrients/${n}`} className="hover:underline">
-                {nutrients[n]}
-              </Link>
-            </li>
-          );
-        })}
-      </ul>
-    </div>
+          <div className="columns-2 md:columns-3 lg:columns-5 xl:columns-6">
+            {Object.keys(nutrients)
+              .sort()
+              .map((firstLetter: string, i) => {
+                return (
+                  <div
+                    key={i}
+                    id={`${firstLetter}`}
+                    className={
+                      "px-[10px] pb-[4px]" +
+                      " " +
+                      (location.hash === `#${firstLetter}`
+                        ? "bg-amber-300"
+                        : "")
+                    }
+                  >
+                    <h3 className="capitalize font-bold text-[24px]">
+                      {firstLetter}
+                    </h3>
+                    <ul>
+                      {nutrients[firstLetter].map((nutrient, i) => (
+                        <li key={i}>
+                          <Link to={`/nutrients/${nutrient.id}`}>
+                            <p className="min-w-0 truncate hover:font-bold">
+                              {nutrient.name}
+                            </p>
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                );
+              })}
+          </div>
+        </div>
+      }
+    />
   );
 };
 

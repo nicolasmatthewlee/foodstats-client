@@ -4,7 +4,7 @@ import NUTRIENT_DATA_JSON from "../nutrient_amounts.json";
 import { percentile } from "./graph-utilities";
 import { useEffect, useState } from "react";
 import { Switch } from "./switch";
-import { Nutrient } from "services/foodServices";
+import { FoodNutrient } from "services/foodServices";
 const NUTRIENT_DATA = Object(NUTRIENT_DATA_JSON);
 
 interface Props {
@@ -13,14 +13,14 @@ interface Props {
     id: number;
     description: string;
     publication_date: string;
-    foodNutrients: Nutrient[];
+    foodNutrients: FoodNutrient[];
   };
 }
 
 export const Visualizations = ({
   data: { data_type, id, description, foodNutrients = [], publication_date },
 }: Props) => {
-  const findNutrientByName = (name: string, data: Nutrient[]) => {
+  const findNutrientByName = (name: string, data: FoodNutrient[]) => {
     for (let i = 0; i < data.length; i++) {
       if (data[i].nutrient === name) return data[i];
     }
@@ -56,7 +56,7 @@ export const Visualizations = ({
   };
 
   const [foodNutrientPercentiles, setFoodNutrientPercentiles] = useState<
-    Nutrient[]
+    FoodNutrient[]
   >([]);
 
   const [isShowingAbsoluteData, setIsShowingAbsoluteData] =
@@ -67,7 +67,7 @@ export const Visualizations = ({
       nutrients: typeof foodNutrients,
       NUTRIENT_DATA: any
     ) => {
-      return nutrients.map((e: Nutrient) => {
+      return nutrients.map((e: FoodNutrient) => {
         const copy = structuredClone(e);
         copy["amount"] =
           Math.round(

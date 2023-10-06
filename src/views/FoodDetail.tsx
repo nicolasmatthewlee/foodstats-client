@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import {
   getFoodNutrients,
   getFood,
-  Nutrient,
+  FoodNutrient,
   Food,
 } from "services/foodServices";
 import AppLayout from "./AppLayout";
@@ -12,7 +12,9 @@ import AppLayout from "./AppLayout";
 const FoodDetail = () => {
   const { id } = useParams();
   const [foodData, setFoodData] = useState<Food | null>(null);
-  const [nutrientsData, setNutrientsData] = useState<Nutrient[] | null>(null);
+  const [nutrientsData, setNutrientsData] = useState<FoodNutrient[] | null>(
+    null
+  );
   const [pageState, setPageState] = useState<
     "loading" | "loaded" | "error" | "not found"
   >("loading");
@@ -37,7 +39,7 @@ const FoodDetail = () => {
   return (
     <AppLayout
       content={
-        <div className="px-[30px]">
+        <div>
           {foodData && nutrientsData && (
             <Visualizations
               data={{

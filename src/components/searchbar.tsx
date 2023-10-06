@@ -66,7 +66,7 @@ export const SearchBar = () => {
       </form>
 
       {isLoading && (
-        <div>
+        <div className="absolute">
           <FontAwesomeIcon
             icon={faSpinner}
             className="animate-spin mr-[10px]"

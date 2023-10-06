@@ -1,10 +1,11 @@
 import { Link } from "react-router-dom";
 import { SearchBar } from "components/searchbar";
 import { ReactNode } from "react";
+import { Footer } from "components/footer";
 
 const AppLayout = ({ content }: { content: ReactNode }) => {
   return (
-    <div>
+    <div className="bg-gray-50">
       {/* header and search bar */}
       <div className="text-left pt-[30px] px-[30px]">
         <Link to="/" className="flex">
@@ -24,6 +25,8 @@ const AppLayout = ({ content }: { content: ReactNode }) => {
 
       {/* content */}
       {content}
+
+      <Footer />
     </div>
   );
 };

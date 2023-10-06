@@ -9,7 +9,7 @@ import { Footer } from "components/footer";
 
 const Landing = () => {
   return (
-    <div>
+    <div className="bg-gray-50">
       {/* header and search bar */}
       <div
         className="text-left pt-[30px] px-[30px]

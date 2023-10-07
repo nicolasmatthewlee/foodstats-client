@@ -2,6 +2,7 @@ import { Link, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLongArrowAltLeft } from "@fortawesome/free-solid-svg-icons";
 import { Beeswarm } from "components/beeswarm";
+import AppLayout from "./AppLayout";
 
 import SR_NUTRIENT_DATA from "nutrient_amounts.json";
 import NUTRIENT_LIST from "nutrient_name.json";
@@ -13,7 +14,7 @@ import NUTRIENT_ID_TO_UNIT from "nutrient_id_to_unit.json";
 type ValidNutrient = keyof typeof SR_NUTRIENT_DATA;
 type ValidID = keyof typeof SR_ID_TO_DESCRIPTION;
 
-export const NutrientPage = () => {
+export const Nutrient = () => {
   const { id } = useParams();
 
   let validId;
@@ -28,30 +29,33 @@ export const NutrientPage = () => {
   }
 
   return (
-    <div className="px-[30px] pb-[30px] space-y-[30px]">
-      <Link to="/">
-        <button className="hover:underline text-sm">
-          <FontAwesomeIcon icon={faLongArrowAltLeft} className="mr-[10px]" />
-          nutrients
-        </button>
-      </Link>
-      {validId ? (
-        <Beeswarm
-          title={NUTRIENT_LIST[validId]}
-          data={SR_NUTRIENT_DATA_LABELS[validId].data}
-          dataLabels={labels}
-          unit={NUTRIENT_ID_TO_UNIT[validId]}
-          separation={0.8}
-        />
-      ) : (
-        <h1>nothing to show</h1>
-      )}
-      <Link to="/">
-        <button className="hover:underline text-sm mt-[30px]">
-          <FontAwesomeIcon icon={faLongArrowAltLeft} className="mr-[10px]" />
-          nutrients
-        </button>
-      </Link>
-    </div>
+    <AppLayout
+      content={
+        <div className="space-y-[30px]">
+          <Link to="/nutrients/">
+            <button className="hover:font-bold">
+              <FontAwesomeIcon
+                icon={faLongArrowAltLeft}
+                className="mr-[10px]"
+              />
+              nutrients
+            </button>
+          </Link>
+          {validId ? (
+            <Beeswarm
+              title={NUTRIENT_LIST[validId]}
+              data={SR_NUTRIENT_DATA_LABELS[validId].data}
+              dataLabels={labels}
+              unit={NUTRIENT_ID_TO_UNIT[validId]}
+              separation={0.8}
+            />
+          ) : (
+            <h1>no data available</h1>
+          )}
+        </div>
+      }
+    />
   );
 };
+
+export default Nutrient;

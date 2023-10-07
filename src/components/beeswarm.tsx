@@ -36,7 +36,7 @@ export const Beeswarm = ({
     if (!dimensions) return;
     const svg = d3.select(svgRef.current);
 
-    const radius = 3;
+    const radius = 6;
 
     const xScale = d3
       .scaleLinear()
@@ -150,7 +150,7 @@ export const Beeswarm = ({
   return (
     <div className="flex flex-col space-y-[10px]">
       <div className="flex items-center">
-        <p className="text-[12px]">{title}</p>
+        <p className="text-[24px] font-bold">{title}</p>
         <div className="flex-1 flex relative justify-end">
           <button
             className="peer border px-[5px] rounded-sm text-xs text-gray-400

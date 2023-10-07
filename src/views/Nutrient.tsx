@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLongArrowAltLeft } from "@fortawesome/free-solid-svg-icons";
 import { Beeswarm } from "components/beeswarm";
 import AppLayout from "./AppLayout";
+import BackLink from "components/BackLink";
 
 import SR_NUTRIENT_DATA from "nutrient_amounts.json";
 import NUTRIENT_LIST from "nutrient_name.json";
@@ -31,16 +32,8 @@ export const Nutrient = () => {
   return (
     <AppLayout
       content={
-        <div className="space-y-[30px]">
-          <Link to="/nutrients/">
-            <button className="hover:font-bold">
-              <FontAwesomeIcon
-                icon={faLongArrowAltLeft}
-                className="mr-[10px]"
-              />
-              nutrients
-            </button>
-          </Link>
+        <div className="space-y-[15px]">
+          <BackLink to="/nutrients/" />
           {validId ? (
             <Beeswarm
               title={NUTRIENT_LIST[validId]}

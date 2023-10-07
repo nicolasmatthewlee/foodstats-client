@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { getNutrients, Nutrient } from "services/foodServices";
 import AppLayout from "./AppLayout";
+import BackLink from "components/BackLink";
 
 const Nutrients = () => {
   const location = useLocation();
@@ -35,7 +36,8 @@ const Nutrients = () => {
     <AppLayout
       content={
         <div>
-          <h2 className="font-bold text-[24px]">nutrients</h2>
+          <BackLink to={"/"} />
+          <h2 className="font-bold text-[24px] mt-[15px]">nutrients</h2>
           <div className="mb-[15px] mt-[5px] grid grid-cols-[repeat(auto-fill,minmax(20px,1fr))]">
             {Object.keys(nutrients)
               .sort()

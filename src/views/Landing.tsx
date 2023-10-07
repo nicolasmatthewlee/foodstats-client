@@ -48,7 +48,7 @@ const Landing = () => {
                   sm:pb-[100%] lg:pb-[75%]"
                   style={{ backgroundImage: `url(${e.image})` }}
                 >
-                  <h2 className="absolute font-bold text-white text-[24px] ml-[30px] mt-[20px]">
+                  <h2 className="absolute font-bold text-white text-[24px] ml-[15px] mt-[15px]">
                     {e.header}
                   </h2>
                 </div>

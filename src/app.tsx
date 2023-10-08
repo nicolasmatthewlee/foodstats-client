@@ -7,6 +7,7 @@ import Nutrients from "views/Nutrients";
 import Nutrient from "views/Nutrient";
 import { SRPage } from "views/sr-page";
 import About from "views/About";
+import Compare from "views/Compare";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
       <Route path="/nutrients/" element={<Nutrients />} />
       <Route path="/nutrients/:id/" element={<Nutrient />} />
       <Route path="/datasets/sr-legacy/" element={<SRPage />} />
+      <Route path="/compare/" element={<Compare />} />
       <Route path="/about/" element={<About />} />
       <Route
         path="*"

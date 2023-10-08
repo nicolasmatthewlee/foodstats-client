@@ -9,7 +9,15 @@ import { useNavigate } from "react-router-dom";
 import { getFoods, Food } from "../services/foodServices";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
-export const SearchBar = () => {
+// renders the search bar
+// by default navigates to the page corresponding to the selection
+// optional parameter customOnSelect is a function that receives
+//  the id of the selection and is called on selection
+export const SearchBar = ({
+  customOnSelect = null,
+}: {
+  customOnSelect?: Function | null;
+}) => {
   const navigate = useNavigate();
 
   const [searchResults, setSearchResults] = useState<Food[] | null>(null);
@@ -47,7 +55,7 @@ export const SearchBar = () => {
         </div>
         <input
           type="text"
-          className="flex-1 py-[10px] pl-[45px] pr-[10px] rounded-lg z-10"
+          className="flex-1 py-[10px] pl-[45px] pr-[10px] rounded-lg z-10 min-w-0"
           onChange={(e) => {
             searchDatabase(e.target.value);
           }}
@@ -57,7 +65,10 @@ export const SearchBar = () => {
           className="px-[15px] hover:bg-gray-100 rounded-r-lg"
           onClick={(e) => {
             e.preventDefault();
-            if (searchResults) navigate(`/foods/${searchResults[0].id}`);
+            if (searchResults) {
+              if (customOnSelect) customOnSelect(searchResults[0].id);
+              else navigate(`/foods/${searchResults[0].id}`);
+            }
           }}
         >
           <FontAwesomeIcon
@@ -80,9 +91,11 @@ export const SearchBar = () => {
       {/* search results */}
       {searchResults && searchResults.length > 0 ? (
         <div className="flex flex-col shadow-lg absolute max-w-full rounded-b-lg">
-          {searchResults.map((e, i) => (
-            <Link to={`/foods/${e.id}`} key={e.id} className="flex">
+          {searchResults.map((e, i) =>
+            // if customOnSelect, do not render Link
+            customOnSelect ? (
               <button
+                key={i}
                 className={
                   "flex-1 text-left truncate px-[15px] py-[5px] focus:z-10 focus:bg-amber-300 focus:outline-none hover:bg-amber-300 " +
                   " " +
@@ -92,12 +105,30 @@ export const SearchBar = () => {
                 }
                 onClick={() => {
                   setSearchResults(null);
+                  customOnSelect(e.id);
                 }}
               >
                 {e.description}
               </button>
-            </Link>
-          ))}
+            ) : (
+              <Link to={`/foods/${e.id}`} key={e.id} className="flex">
+                <button
+                  className={
+                    "flex-1 text-left truncate px-[15px] py-[5px] focus:z-10 focus:bg-amber-300 focus:outline-none hover:bg-amber-300 " +
+                    " " +
+                    (i % 2 === 0 ? "bg-gray-100 " : "bg-white") +
+                    " " +
+                    (i === searchResults.length - 1 ? "rounded-b-lg" : "")
+                  }
+                  onClick={() => {
+                    setSearchResults(null);
+                  }}
+                >
+                  {e.description}
+                </button>
+              </Link>
+            )
+          )}
         </div>
       ) : null}
     </div>

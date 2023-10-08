@@ -1,19 +1,13 @@
-import { Link } from "react-router-dom";
 import { SearchBar } from "components/searchbar";
 import { ReactNode } from "react";
+import Header from "components/Header";
 import { Footer } from "components/footer";
 
 const AppLayout = ({ content }: { content: ReactNode }) => {
   return (
     <div className="bg-gray-50">
-      {/* header and search bar */}
-      <div className="text-left pt-[30px] px-[30px]">
-        <Link to="/" className="flex">
-          <h1 className="inline text-[40px] font-bold text-center flex-1">
-            foodstats.net
-          </h1>
-        </Link>
-      </div>
+      <Header />
+      {/* search bar */}
       <div
         className="pt-[15px] pb-[30px] px-[30px]
         sm:px-[60px] md:px-[90px] xl:px-[240px] flex justify-center"
@@ -25,7 +19,6 @@ const AppLayout = ({ content }: { content: ReactNode }) => {
 
       {/* content */}
       <div className="px-[30px] pb-[30px]">{content}</div>
-
       <Footer />
     </div>
   );

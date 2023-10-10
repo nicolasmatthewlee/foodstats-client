@@ -11,17 +11,20 @@ import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
 // renders the search bar
 // by default navigates to the page corresponding to the selection
-// optional parameter customOnSelect is a function that receives
-//  the id of the selection and is called on selection
+// optional parameter customOnSelect is a function called on selection
+//  that receives the id of the selection
 export const SearchBar = ({
   customOnSelect = null,
+  placeholder = "search foods...",
 }: {
   customOnSelect?: Function | null;
+  placeholder?: string;
 }) => {
   const navigate = useNavigate();
 
   const [searchResults, setSearchResults] = useState<Food[] | null>(null);
   const [isLoading, setIsLoading] = useState<Boolean>(false);
+  const [value, setValue] = useState<string>("");
 
   const searchDatabase = async (query: string) => {
     setSearchResults(null);
@@ -57,17 +60,22 @@ export const SearchBar = ({
           type="text"
           className="flex-1 py-[10px] pl-[45px] pr-[10px] rounded-lg z-10 min-w-0"
           onChange={(e) => {
+            setValue(e.target.value);
             searchDatabase(e.target.value);
           }}
-          placeholder="search foods..."
+          placeholder={placeholder}
+          value={value}
         />
         <button
           className="px-[15px] hover:bg-gray-100 rounded-r-lg"
           onClick={(e) => {
             e.preventDefault();
             if (searchResults) {
+              setValue(searchResults[0].description);
               if (customOnSelect) customOnSelect(searchResults[0].id);
               else navigate(`/foods/${searchResults[0].id}`);
+
+              setSearchResults(null);
             }
           }}
         >
@@ -104,6 +112,7 @@ export const SearchBar = ({
                   (i === searchResults.length - 1 ? "rounded-b-lg" : "")
                 }
                 onClick={() => {
+                  setValue(e.description);
                   setSearchResults(null);
                   customOnSelect(e.id);
                 }}
@@ -121,6 +130,7 @@ export const SearchBar = ({
                     (i === searchResults.length - 1 ? "rounded-b-lg" : "")
                   }
                   onClick={() => {
+                    setValue(e.description);
                     setSearchResults(null);
                   }}
                 >

@@ -8,6 +8,7 @@ import {
   Food,
 } from "services/foodServices";
 import AppLayout from "./AppLayout";
+import FoodNutrientsPlots from "components/plots/FoodNutrientsPlots";
 
 const FoodDetail = () => {
   const { id } = useParams();
@@ -51,6 +52,7 @@ const FoodDetail = () => {
               }}
             />
           )}
+
           {pageState === "loading" && (
             <div className="pb-[30px]">loading...</div>
           )}

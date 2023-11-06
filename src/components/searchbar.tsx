@@ -12,7 +12,7 @@ import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 // renders the search bar
 // by default navigates to the page corresponding to the selection
 // optional parameter customOnSelect is a function called on selection
-//  that receives the id of the selection
+// that receives the id of the selection
 export const SearchBar = ({
   customOnSelect = null,
   placeholder = "search foods...",

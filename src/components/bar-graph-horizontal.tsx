@@ -4,7 +4,7 @@ import * as d3 from "d3";
 
 interface Props {
   title: string;
-  data: number[];
+  data: (number | null)[];
   units: string[];
   labels: string[];
 }
@@ -25,9 +25,10 @@ export const BarGraphHorizontal = ({ title, data, units, labels }: Props) => {
       .range([0, dimensions.height])
       .padding(0.2);
 
+    const non_null_values = data.filter((e) => e !== null) as number[];
     const xScale = d3
       .scaleLinear()
-      .domain([0, Math.max(...data)])
+      .domain([0, Math.max(...non_null_values)])
       .range([0, dimensions.width]);
 
     const xAxis = d3

@@ -19,6 +19,7 @@ export interface Nutrient {
   id: number;
   name: string;
   unit_name: string;
+  category: number;
 }
 
 // fetches foods containing the query string
